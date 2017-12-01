@@ -12,7 +12,14 @@ const modules = join(root, 'node_modules');
 const dest    = join(root, 'dist');
 
 const dotenv = require('dotenv');
+require('babel-register');
+
 const NODE_ENV = process.env.NODE_ENV;
+const isDev  = NODE_ENV === 'development';
+const isTest = NODE_ENV === 'test';
+// alternatively, we can use process.argv[1]
+// const isDev = (process.argv[1] || '')
+//                .indexOf('hjs-dev-server') !== -1;
 
 const dotEnvVars = dotenv.config();
 const environmentEnv = dotenv.config({
@@ -31,12 +38,8 @@ const defines =
     __NODE_ENV__: JSON.stringify(NODE_ENV)
   });
 
-const isDev = NODE_ENV === 'development';
-// alternatively, we can use process.argv[1]
-// const isDev = (process.argv[1] || '')
-//                .indexOf('hjs-dev-server') !== -1;
-
 var config = getConfig({
+  isDev,
   in: join(src, 'app.js'),
   out: dest,
   clearBeforeBuild: true
@@ -90,5 +93,29 @@ config.module.loaders.push({
   include: [modules],
   loader: 'style!css'
 })
+
+config.externals = {
+  'react/lib/ReactContext': true,
+  'react/lib/ExecutionEnvironment': true,
+  'react/addons': true
+}
+
+if (isTest) {
+  config.externals = {
+    'react/lib/ReactContext': true,
+    'react/lib/ExecutionEnvironment': true
+  }
+
+  config.plugins = config.plugins.filter(p => {
+    const name = p.constructor.toString();
+    const fnName = name.match(/^function (.*)\((.*\))/)
+
+    const idx = [
+      'DedupePlugin',
+      'UglifyJsPlugin'
+    ].indexOf(fnName[1]);
+    return idx < 0;
+  })
+}
 
 module.exports = config;
