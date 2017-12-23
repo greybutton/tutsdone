@@ -1,0 +1,11 @@
+.header {
+  padding: 0 25px;
+  h2 {
+    font-size: 1.5em;
+  }
+  .photoStrip {
+    flex: 1;
+    display: flex;
+    overflow: auto;
+  }
+}
