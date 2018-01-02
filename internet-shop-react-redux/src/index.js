@@ -12,6 +12,7 @@ import {Provider} from 'react-redux'
 import reducers from './reducers'
 import Layout from './containers/Layout'
 import Phones from './containers/Phones'
+import Phone from './containers/Phone'
 
 const store = createStore(reducers, composeWithDevTools(
     applyMiddleware(thunk)
@@ -25,6 +26,7 @@ ReactDOM.render(
             <Route component={Layout}>
                 <Route path='/' component={Phones} />
             </Route>
+            <Route path='/phones/:id' component={Phone} />
         </Router>
     </Provider>,
     document.getElementById('root')
