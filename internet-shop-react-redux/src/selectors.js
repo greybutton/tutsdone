@@ -14,6 +14,7 @@ export const getPhones = state => {
 
   return phones
 }
+
 export const getRenderedPhonesLength = state => R.length(state.phonesPage.ids)
 
 export const getTotalBasketCount = state => R.length(state.basket)
