@@ -81,9 +81,9 @@ class Phones extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
   return {
-    phones: getPhones(state)
+    phones: getPhones(state, ownProps)
   }
 }
 
