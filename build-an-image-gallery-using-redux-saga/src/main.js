@@ -3,7 +3,9 @@ import "babel-polyfill"
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+import Gallery from './Gallery'
+
 ReactDOM.render(
-  <h1>Hello React!</h1>,
+  <Gallery />,
   document.getElementById('root')
 );
