@@ -3,6 +3,28 @@ const path = require('path');
 const bodyParser = require("body-parser");
 const app = express();
 const Pusher = require('pusher');
+const jwt = require('express-jwt');
+const jwks = require('jwks-rsa');
+
+const port = process.env.PORT || 8080;
+
+const jwtCheck = jwt({
+    secret: jwks.expressJwtSecret({
+        cache: true,
+        rateLimit: true,
+        jwksRequestsPerMinute: 5,
+        jwksUri: "https://greybutton.eu.auth0.com/.well-known/jwks.json"
+    }),
+    audience: 'http://localhost:3001/api/',
+    issuer: "https://greybutton.eu.auth0.com/",
+    algorithms: ['RS256']
+});
+
+app.use(jwtCheck);
+
+app.get('/authorized', function (req, res) {
+  res.send('Secured Resource');
+});
 
 //initialize Pusher with your appId, key and secret
 const pusher = new Pusher({
