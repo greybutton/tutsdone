@@ -58,7 +58,7 @@ describe('TodoItem', () => {
 
   it('invokes callback when the delete button is clicked', () => {
     const text = 'React';
-    var deleted = false;
+    let deleted = false;
     // We define a mock deleteItem function
     const deleteItem = () => deleted = true;
     const component = renderIntoDocument(
@@ -73,7 +73,7 @@ describe('TodoItem', () => {
 
   it('invokes callback when checkbox is clicked', () => {
     const text = 'React';
-    var isChecked = false;
+    let isChecked = false;
     const toggleComplete = () => isChecked = true;
     const component = renderIntoDocument(
       <TodoItem text={text} toggleComplete={toggleComplete}/>
@@ -85,7 +85,7 @@ describe('TodoItem', () => {
   });
 
   it('calls a callback when text is double clicked', () => {
-    var text = 'React';
+    let text = 'React';
     const editItem = () => text = 'Redux';
     const component = renderIntoDocument(
       <TodoItem text={text} editItem={editItem}/>

@@ -12,7 +12,7 @@ const {
 describe('TextInput', () => {
   it('calls a callback when pressing enter', () => {
     const text = 'React';
-    var hasDoneEditing = false;
+    let hasDoneEditing = false;
     const doneEditing = () => hasDoneEditing = true;
     const component = renderIntoDocument(
       <TextInput text={text} doneEditing={doneEditing}/>
@@ -25,7 +25,7 @@ describe('TextInput', () => {
 
   it('calls a callback when pressing escape or losing focus', () => {
     const text = 'React';
-    var hasCanceledEditing = false;
+    let hasCanceledEditing = false;
     const cancelEditing = () => hasCanceledEditing = true;
     const component = renderIntoDocument(
       <TextInput text={text} cancelEditing={cancelEditing}/>
