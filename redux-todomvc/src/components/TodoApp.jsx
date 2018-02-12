@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import TodoHeader from './TodoHeader'
 import TodoList from './TodoList'
 import TodoTools from './TodoTools'
@@ -28,3 +29,12 @@ export default class TodoApp extends React.Component {
     </div>
   }
 };
+
+function mapStateToProps(state) {
+  return {
+    todos: state.get('todos'),
+    filter: state.get('filter')
+  };
+}
+
+export const TodoAppContainer = connect(mapStateToProps)(TodoApp);
