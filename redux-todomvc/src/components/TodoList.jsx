@@ -18,6 +18,7 @@ export default class TodoList extends React.PureComponent {
       <ul className="todo-list">
         {this.getItems().map(item =>
           <TodoItem key={item.get('text')}
+                    id={item.get('id')}
                     text={item.get('text')}
                     isCompleted={this.isCompleted(item)}
                     isEditing={item.get('editing')}
