@@ -4,6 +4,7 @@ import TodoHeader from './TodoHeader'
 import TodoList from './TodoList'
 import TodoTools from './TodoTools'
 import Footer from './TodoFooter'
+import * as actionCreators from '../actions';
 
 export default class TodoApp extends React.Component {
   getNbActiveItems() {
@@ -19,7 +20,7 @@ export default class TodoApp extends React.Component {
     return <div>
       <section className="todoapp">
         <TodoHeader />
-        <TodoList todos={this.props.todos} filter={this.props.filter} />
+        <TodoList {...this.props} />
         <TodoTools
           filter={this.props.filter}
           nbActiveItems={this.getNbActiveItems()}
@@ -37,4 +38,4 @@ function mapStateToProps(state) {
   };
 }
 
-export const TodoAppContainer = connect(mapStateToProps)(TodoApp);
+export const TodoAppContainer = connect(mapStateToProps, actionCreators)(TodoApp);

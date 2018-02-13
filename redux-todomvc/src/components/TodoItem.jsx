@@ -19,6 +19,7 @@ export default class TodoItem extends React.PureComponent {
         <label
           htmlFor="todo"
           ref="text"
+          onClick={() => this.props.toggleComplete(this.props.id)}
           onDoubleClick={() => this.props.editItem(this.props.id)}
         >
           {this.props.text}
