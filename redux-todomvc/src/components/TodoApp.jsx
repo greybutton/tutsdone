@@ -22,6 +22,7 @@ export default class TodoApp extends React.Component {
         <TodoHeader />
         <TodoList {...this.props} />
         <TodoTools
+          changeFilter={this.props.changeFilter}
           filter={this.props.filter}
           nbActiveItems={this.getNbActiveItems()}
         />
