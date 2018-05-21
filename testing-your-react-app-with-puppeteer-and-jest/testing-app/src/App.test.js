@@ -1,5 +1,13 @@
 // import puppeteer from "puppeteer";
 const puppeteer = require('puppeteer');
+const faker = require('faker')
+
+const user = {
+  email: faker.internet.email(),
+  password: 'test',
+  firstName: faker.name.firstName(),
+  lastName: faker.name.lastName()
+}
 
 const isDebugging = () => {
   const debugging_mode = {
@@ -45,4 +53,32 @@ describe('on page load', () => {
     expect(navbar).toBe(true)
     expect(listItems.length).toBe(4)
   })
+
+  test(
+    'login form works correctly',
+    async () => {
+      const firstNameEl = await page.$('[data-testid="firstName"]');
+      const lastNameEl = await page.$('[data-testid="lastName"]');
+      const emailEl = await page.$('[data-testid="email"]');
+      const passwordEl = await page.$('[data-testid="password"]');
+      const submitEl = await page.$('[data-testid="submit"]');
+
+      await firstNameEl.click();
+      await page.type('[data-testid="firstName"]', user.firstName);
+
+      await lastNameEl.click();
+      await page.type('[data-testid="lastName"]', user.lastName);
+
+      await emailEl.click();
+      await page.type('[data-testid="email"]', user.email);
+
+      await passwordEl.click();
+      await page.type('[data-testid="password"]', user.password);
+
+      await submitEl.click();
+
+      await page.waitForSelector('[data-testid="success"]');
+    },
+    1600000
+  );
 })
