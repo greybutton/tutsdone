@@ -6,11 +6,19 @@ import Login from './Login'
 import SuccessMessage from './SuccessMessage'
 
 class App extends Component {
-  state = { complete: false }
+  state = {
+    complete: false,
+    firstName: '',
+  }
 
   handleSubmit = e => {
     e.preventDefault()
+    document.cookie = `firstName=${this.state.firstName}`
     this.setState({ complete: true })
+  }
+
+  handleInput = e => {
+    this.setState({firstName: e.currentTarget.value})
   }
 
   render() {
@@ -35,7 +43,10 @@ class App extends Component {
           this.state.complete ? 
           <SuccessMessage/> 
           : 
-          <Login submit={this.handleSubmit} />
+          <Login 
+            submit={this.handleSubmit}
+            input={this.handleInput}
+          />
         }
       </div>
     );

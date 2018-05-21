@@ -1,6 +1,8 @@
 // import puppeteer from "puppeteer";
 const puppeteer = require('puppeteer');
 const faker = require('faker')
+const devices = require('puppeteer/DeviceDescriptors')
+const iPhone = devices['iPhone 6']
 
 const user = {
   email: faker.internet.email(),
@@ -24,7 +26,7 @@ beforeAll(async () => {
   browser = await puppeteer.launch(isDebugging()) 
   page = await browser.newPage() 
   await page.goto('http://localhost:3000/') 
-  page.setViewport({ width: 500, height: 2400 })
+  page.emulate(iPhone)
 })
 
 afterAll(() => {     
@@ -35,13 +37,13 @@ afterAll(() => {
 
 describe('on page load', () => {
   test('h1 loads correctly', async() => {
-    page.emulate({
-      viewport: {
-        width: 500,
-        height: 2400,
-      },
-      userAgent: ''
-    })
+    // page.emulate({
+    //   viewport: {
+    //     width: 500,
+    //     height: 2400,
+    //   },
+    //   userAgent: ''
+    // })
 
     const html = await page.$eval('.App-title', e => e.innerHTML);
     expect(html).toBe('Welcome to React');
@@ -53,7 +55,9 @@ describe('on page load', () => {
     expect(navbar).toBe(true)
     expect(listItems.length).toBe(4)
   })
+})
 
+describe('login form', () => {
   test(
     'login form works correctly',
     async () => {
@@ -81,4 +85,13 @@ describe('on page load', () => {
     },
     1600000
   );
+
+  test('sets firstName cookie', async () => {
+    const cookies = await page.cookies();
+    const firstNameCookie = cookies.find(
+      c => c.name === 'firstName' && c.value === user.firstName
+    );
+
+    expect(firstNameCookie).not.toBeUndefined();
+  });
 })
