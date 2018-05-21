@@ -37,14 +37,6 @@ afterAll(() => {
 
 describe('on page load', () => {
   test('h1 loads correctly', async() => {
-    // page.emulate({
-    //   viewport: {
-    //     width: 500,
-    //     height: 2400,
-    //   },
-    //   userAgent: ''
-    // })
-
     const html = await page.$eval('.App-title', e => e.innerHTML);
     expect(html).toBe('Welcome to React');
   })
@@ -53,7 +45,12 @@ describe('on page load', () => {
     const navbar = await page.$eval('.navbar', el => el ? true : false)
     const listItems = await page.$$('.nav-li')
     expect(navbar).toBe(true)
-    expect(listItems.length).toBe(4)
+    if (listItems.length !== 3) {
+      await page.screenshot({path: 'screenshot.png'})
+      expect(listItems.length).toBe(3)
+    } else {
+      expect(listItems.length).toBe(4)
+    }
   })
 })
 
