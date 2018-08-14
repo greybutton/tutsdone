@@ -26,3 +26,20 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.row {
+  padding: 5px;
+}
+
+.row:hover {
+  background-color: lightblue;
+}
+
+.row_selected {
+  background-color: orange;
+}
+
+.row_selected:hover {
+  background-color: orange;
+}
+

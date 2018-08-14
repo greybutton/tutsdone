@@ -50,23 +50,76 @@ const App = () => (
       }
 
       return (
-        <RepositoryList repositories={organization.repositories} />
+        <Repositories repositories={organization.repositories} />
       );
     }}
   </Query>
 );
 
-const RepositoryList = ({ repositories }) => (
+class Repositories extends React.Component {
+  state = {
+    selectedRepositoryIds: [],
+  };
+
+  toggleSelectRepository = (id, isSelected) => {
+    let { selectedRepositoryIds } = this.state;
+
+    selectedRepositoryIds = isSelected
+      ? selectedRepositoryIds.filter(itemId => itemId !== id)
+      : selectedRepositoryIds.concat(id);
+
+    this.setState({ selectedRepositoryIds });
+  };
+
+  render() {
+    return (
+      <RepositoryList
+        repositories={this.props.repositories}
+        selectedRepositoryIds={this.state.selectedRepositoryIds}
+        toggleSelectRepository={this.toggleSelectRepository}
+      />
+    );
+  }
+}
+
+
+const RepositoryList = ({
+  repositories,
+  selectedRepositoryIds,
+  toggleSelectRepository,
+}) => (
   <ul>
     {repositories.edges.map(({ node }) => {
+      const isSelected = selectedRepositoryIds.includes(node.id);
+
+      const rowClassName = ['row'];
+
+      if (isSelected) {
+        rowClassName.push('row_selected');
+      }
+
       return (
-        <li key={node.id}>
+        <li className={rowClassName.join(' ')} key={node.id}>
+          <Select
+            id={node.id}
+            isSelected={isSelected}
+            toggleSelectRepository={toggleSelectRepository}
+          />{' '}
           <a href={node.url}>{node.name}</a>{' '}
           {node.viewerHasStarred ? <Unstar id={node.id} /> : <Star id={node.id} />}
         </li>
       );
     })}
   </ul>
+);
+
+const Select = ({ id, isSelected, toggleSelectRepository }) => (
+  <button
+    type="button"
+    onClick={() => toggleSelectRepository(id, isSelected)}
+  >
+    {isSelected ? 'Unselect' : 'Select'}
+  </button>
 );
 
 const Star = ({ id }) => (
