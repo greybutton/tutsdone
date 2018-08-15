@@ -42,9 +42,15 @@ const UNSTAR_REPOSITORY = gql`
   }
 `;
 
-const GET_SELECTED_REPOSITORIES = gql`
+export const GET_SELECTED_REPOSITORIES = gql`
   query {
     selectedRepositoryIds @client
+  }
+`;
+
+const SELECT_REPOSITORY = gql`
+  mutation($id: ID!, $isSelected: Boolean!) {
+    toggleSelectRepository(id: $id, isSelected: $isSelected) @client
   }
 `;
 
@@ -77,7 +83,6 @@ const Repositories = ({ repositories }) => (
 const RepositoryList = ({
   repositories,
   selectedRepositoryIds,
-  toggleSelectRepository,
 }) => (
   <ul>
     {repositories.edges.map(({ node }) => {
@@ -94,7 +99,6 @@ const RepositoryList = ({
           <Select
             id={node.id}
             isSelected={isSelected}
-            toggleSelectRepository={toggleSelectRepository}
           />{' '}
           <a href={node.url}>{node.name}</a>{' '}
           {node.viewerHasStarred ? <Unstar id={node.id} /> : <Star id={node.id} />}
@@ -104,13 +108,17 @@ const RepositoryList = ({
   </ul>
 );
 
-const Select = ({ id, isSelected, toggleSelectRepository }) => (
-  <button
-    type="button"
-    onClick={() => toggleSelectRepository(id, isSelected)}
+const Select = ({ id, isSelected }) => (
+  <Mutation
+    mutation={SELECT_REPOSITORY}
+    variables={{ id, isSelected }}
   >
-    {isSelected ? 'Unselect' : 'Select'}
-  </button>
+    {toggleSelectRepository => (
+      <button type="button" onClick={toggleSelectRepository}>
+        {isSelected ? 'Unselect' : 'Select'}
+      </button>
+    )}
+  </Mutation>
 );
 
 const Star = ({ id }) => (
